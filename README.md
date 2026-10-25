@@ -144,3 +144,9 @@ This works, because multiple GZIP files can be freely concatenated.
 For .zip files the signature gets prepended to the input document.
 This works because ZIP files can be prepended with any data as long as all relative addresses are fixed up afterwards.
 This feature is used e.g. in self-extracting ZIP files.
+
+Most ZIP readers handle the prepended signature, e.g. `unzip`, `bsdtar`/`tar`, Python's `zipfile`,
+and third-party unarchivers like The Unarchiver.
+macOS's built-in Archive Utility and `ditto` do not: they expect a ZIP file to start with a ZIP header,
+and report the file as unsupported (`ditto: Couldn't read PKZip signature`).
+To open a signed .zip file with them, remove the signature first with `zipsign unsign zip <INPUT>`.
