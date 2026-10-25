@@ -36,19 +36,16 @@ fn assert_refused_exists(output: &Output) {
 fn setup(dir: &Path) -> Result {
     assert_success(&zipsign(dir, &["gen-key", "priv.key", "pub.key"])?);
     fs::write(dir.join("input.tgz"), b"not really a tarball")?;
-    assert_success(&zipsign(
-        dir,
-        &[
-            "sign",
-            "tar",
-            "input.tgz",
-            "priv.key",
-            "-c",
-            CONTEXT,
-            "-o",
-            "signed.tgz",
-        ],
-    )?);
+    assert_success(&zipsign(dir, &[
+        "sign",
+        "tar",
+        "input.tgz",
+        "priv.key",
+        "-c",
+        CONTEXT,
+        "-o",
+        "signed.tgz",
+    ])?);
     Ok(())
 }
 
@@ -59,10 +56,14 @@ fn sign_output() -> Result {
     setup(dir)?;
 
     // A new output file needs no `--force`.
-    assert_success(&zipsign(
-        dir,
-        &["verify", "tar", "signed.tgz", "pub.key", "-c", CONTEXT],
-    )?);
+    assert_success(&zipsign(dir, &[
+        "verify",
+        "tar",
+        "signed.tgz",
+        "pub.key",
+        "-c",
+        CONTEXT,
+    ])?);
 
     // An existing output file is refused and left untouched without `--force` ...
     fs::write(dir.join("existing.tgz"), b"keep me")?;
@@ -81,10 +82,14 @@ fn sign_output() -> Result {
 
     // ... and replaced with `--force`.
     assert_success(&zipsign(dir, &[&sign_existing[..], &["-f"]].concat())?);
-    assert_success(&zipsign(
-        dir,
-        &["verify", "tar", "existing.tgz", "pub.key", "-c", CONTEXT],
-    )?);
+    assert_success(&zipsign(dir, &[
+        "verify",
+        "tar",
+        "existing.tgz",
+        "pub.key",
+        "-c",
+        CONTEXT,
+    ])?);
     Ok(())
 }
 
@@ -95,10 +100,13 @@ fn unsign_output() -> Result {
     setup(dir)?;
 
     // A new output file needs no `--force`.
-    assert_success(&zipsign(
-        dir,
-        &["unsign", "tar", "signed.tgz", "-o", "unsigned.tgz"],
-    )?);
+    assert_success(&zipsign(dir, &[
+        "unsign",
+        "tar",
+        "signed.tgz",
+        "-o",
+        "unsigned.tgz",
+    ])?);
     assert_eq!(fs::read(dir.join("unsigned.tgz"))?, b"not really a tarball");
 
     // An existing output file is refused and left untouched without `--force` ...
