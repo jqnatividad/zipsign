@@ -149,4 +149,9 @@ Most ZIP readers handle the prepended signature, e.g. `unzip`, `bsdtar`/`tar`, P
 and third-party unarchivers like The Unarchiver.
 macOS's built-in Archive Utility and `ditto` do not: they expect a ZIP file to start with a ZIP header,
 and report the file as unsupported (`ditto: Couldn't read PKZip signature`).
-To open a signed .zip file with them, remove the signature first with `zipsign unsign zip <INPUT>`.
+Workarounds on macOS:
+
+* Extract the file with `tar -xf <INPUT>` or `unzip <INPUT>`.
+  Both tools come preinstalled with macOS and read signed .zip files as-is.
+* Or remove the signature with `zipsign unsign zip <INPUT>`.
+  The resulting file opens in Archive Utility, but it can no longer be verified.
