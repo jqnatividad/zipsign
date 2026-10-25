@@ -70,7 +70,7 @@ struct CommonArgs {
 pub(crate) enum Error {
     #[error("could not determine `context` string by the input name")]
     Context(#[from] ImplicitContextError),
-    #[error("output exists, use `--force` allow replacing a file")]
+    #[error("output exists, use `--force` to replace it")]
     Exists,
     #[error("could not gather signature data")]
     GatherSignatureData(#[from] GatherSignatureDataError),

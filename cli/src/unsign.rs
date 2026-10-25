@@ -54,7 +54,7 @@ struct CommonArgs {
 
 #[derive(Debug, thiserror::Error)]
 pub(crate) enum Error {
-    #[error("output exists, use `--force` allow replacing a file")]
+    #[error("output exists, use `--force` to replace it")]
     Exists,
     #[error("could not open input file")]
     InputOpen(#[source] std::io::Error),
